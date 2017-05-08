@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="9uB-dF-ZMi" kind="show" identifier="game" id="jo8-RA-wHE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-762" y="315"/>
+        </scene>
+        <!--Game View-->
+        <scene sceneID="OUJ-Fp-2De">
+            <objects>
+                <viewController id="9uB-dF-ZMi" customClass="GameView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TiF-I3-cxl"/>
+                        <viewControllerLayoutGuide type="bottom" id="QC5-ou-mpe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JjK-yG-95g">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="sGm-8m-dcv" kind="show" identifier="lose" id="Loz-NL-2qV"/>
+                        <segue destination="jFo-c2-mFu" kind="show" identifier="win" id="tRj-7j-Iqc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RLt-pz-46R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="120" y="417"/>
+        </scene>
+        <!--Win View-->
+        <scene sceneID="zyi-hj-iFQ">
+            <objects>
+                <viewController id="jFo-c2-mFu" customClass="WinView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tbd-zz-Yqe"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pg0-Dn-75K"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iwe-AT-V1X">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="dJu-nJ-mWb" kind="unwind" identifier="menu1" unwindAction="unwindToViewController:" id="hip-7K-xaR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ig-wE-ul9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="dJu-nJ-mWb" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="597" y="-378"/>
+        </scene>
+        <!--Lose View-->
+        <scene sceneID="105-ud-78e">
+            <objects>
+                <viewController id="sGm-8m-dcv" customClass="LoseView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cSK-lv-yak"/>
+                        <viewControllerLayoutGuide type="bottom" id="HKU-AG-Dct"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mw5-LL-t9F">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="view" destination="mw5-LL-t9F" id="hY7-9T-FC9"/>
+                        <segue destination="0SK-Mw-XT6" kind="unwind" identifier="menu" unwindAction="unwindToViewController:" id="Ufz-Yd-u4Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UzN-RU-PTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0SK-Mw-XT6" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="835.5" y="268"/>
+        </scene>
+    </scenes>
+</document>
