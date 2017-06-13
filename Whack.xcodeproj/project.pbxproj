@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8415B4901EDBF3E000B0C27C /* HighScoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415B48F1EDBF3E000B0C27C /* HighScoresView.swift */; };
 		841BAA6A1EB9AD4200F17914 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841BAA691EB9AD4200F17914 /* AppDelegate.swift */; };
 		841BAA6C1EB9AD4200F17914 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841BAA6B1EB9AD4200F17914 /* ViewController.swift */; };
 		841BAA6F1EB9AD4200F17914 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841BAA6D1EB9AD4200F17914 /* Main.storyboard */; };
@@ -16,13 +17,14 @@
 		841BAA7F1EB9C78B00F17914 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841BAA7E1EB9C78B00F17914 /* GameView.swift */; };
 		841BAA881EB9F04200F17914 /* c.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841BAA871EB9F04200F17914 /* c.wav */; };
 		841BAA8A1EB9F04800F17914 /* e.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841BAA891EB9F04800F17914 /* e.wav */; };
+		844AD6191EE407CB0000BF4C /* GameEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844AD6181EE407CB0000BF4C /* GameEndView.swift */; };
+		844AD61B1EE4249E0000BF4C /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844AD61A1EE4249E0000BF4C /* Score.swift */; };
 		84C5C2E51EBEF5BD00B4F781 /* digital-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 841BAA8B1EB9F04F00F17914 /* digital-7.ttf */; };
 		84C5C2E71EBEF65000B4F781 /* UIImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5C2E61EBEF65000B4F781 /* UIImageCell.swift */; };
-		84C5C2E91EBF4AA600B4F781 /* LoseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5C2E81EBF4AA600B4F781 /* LoseView.swift */; };
-		84C5C2EB1EBF764A00B4F781 /* WinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C5C2EA1EBF764A00B4F781 /* WinView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8415B48F1EDBF3E000B0C27C /* HighScoresView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighScoresView.swift; sourceTree = "<group>"; };
 		841BAA661EB9AD4200F17914 /* Whack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Whack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		841BAA691EB9AD4200F17914 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		841BAA6B1EB9AD4200F17914 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,9 +37,9 @@
 		841BAA871EB9F04200F17914 /* c.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = c.wav; sourceTree = SOURCE_ROOT; };
 		841BAA891EB9F04800F17914 /* e.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = e.wav; sourceTree = SOURCE_ROOT; };
 		841BAA8B1EB9F04F00F17914 /* digital-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "digital-7.ttf"; sourceTree = SOURCE_ROOT; };
+		844AD6181EE407CB0000BF4C /* GameEndView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameEndView.swift; sourceTree = "<group>"; };
+		844AD61A1EE4249E0000BF4C /* Score.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		84C5C2E61EBEF65000B4F781 /* UIImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageCell.swift; sourceTree = "<group>"; };
-		84C5C2E81EBF4AA600B4F781 /* LoseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoseView.swift; sourceTree = "<group>"; };
-		84C5C2EA1EBF764A00B4F781 /* WinView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,9 +75,10 @@
 				841BAA691EB9AD4200F17914 /* AppDelegate.swift */,
 				841BAA6B1EB9AD4200F17914 /* ViewController.swift */,
 				841BAA7E1EB9C78B00F17914 /* GameView.swift */,
+				8415B48F1EDBF3E000B0C27C /* HighScoresView.swift */,
 				84C5C2E61EBEF65000B4F781 /* UIImageCell.swift */,
-				84C5C2E81EBF4AA600B4F781 /* LoseView.swift */,
-				84C5C2EA1EBF764A00B4F781 /* WinView.swift */,
+				844AD6181EE407CB0000BF4C /* GameEndView.swift */,
+				844AD61A1EE4249E0000BF4C /* Score.swift */,
 				841BAA6D1EB9AD4200F17914 /* Main.storyboard */,
 				841BAA731EB9AD4200F17914 /* Assets.xcassets */,
 				841BAA751EB9AD4200F17914 /* LaunchScreen.storyboard */,
@@ -178,12 +181,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				841BAA6C1EB9AD4200F17914 /* ViewController.swift in Sources */,
-				84C5C2EB1EBF764A00B4F781 /* WinView.swift in Sources */,
+				8415B4901EDBF3E000B0C27C /* HighScoresView.swift in Sources */,
 				841BAA721EB9AD4200F17914 /* Whack.xcdatamodeld in Sources */,
 				84C5C2E71EBEF65000B4F781 /* UIImageCell.swift in Sources */,
 				841BAA7F1EB9C78B00F17914 /* GameView.swift in Sources */,
 				841BAA6A1EB9AD4200F17914 /* AppDelegate.swift in Sources */,
-				84C5C2E91EBF4AA600B4F781 /* LoseView.swift in Sources */,
+				844AD61B1EE4249E0000BF4C /* Score.swift in Sources */,
+				844AD6191EE407CB0000BF4C /* GameEndView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

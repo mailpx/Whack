@@ -20,11 +20,12 @@
                     </view>
                     <connections>
                         <segue destination="9uB-dF-ZMi" kind="show" identifier="game" id="jo8-RA-wHE"/>
+                        <segue destination="iVa-bJ-gEY" kind="show" identifier="highscores" id="b11-bd-yNj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-762" y="315"/>
+            <point key="canvasLocation" x="-957" y="320"/>
         </scene>
         <!--Game View-->
         <scene sceneID="OUJ-Fp-2De">
@@ -40,56 +41,58 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="sGm-8m-dcv" kind="show" identifier="lose" id="Loz-NL-2qV"/>
-                        <segue destination="jFo-c2-mFu" kind="show" identifier="win" id="tRj-7j-Iqc"/>
+                        <segue destination="G5v-4n-xSI" kind="unwind" identifier="return" unwindAction="unwindToViewController:" id="Hl7-oL-VDG"/>
+                        <segue destination="TFw-L1-OAG" kind="show" identifier="score" id="EcA-Vt-xDm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RLt-pz-46R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="G5v-4n-xSI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="120" y="417"/>
+            <point key="canvasLocation" x="-214.5" y="347"/>
         </scene>
-        <!--Win View-->
-        <scene sceneID="zyi-hj-iFQ">
+        <!--Game End View-->
+        <scene sceneID="ES1-Y0-Mgx">
             <objects>
-                <viewController id="jFo-c2-mFu" customClass="WinView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="TFw-L1-OAG" customClass="GameEndView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tbd-zz-Yqe"/>
-                        <viewControllerLayoutGuide type="bottom" id="Pg0-Dn-75K"/>
+                        <viewControllerLayoutGuide type="top" id="COw-68-5Dr"/>
+                        <viewControllerLayoutGuide type="bottom" id="7xa-oE-3yA"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="iwe-AT-V1X">
+                    <view key="view" contentMode="scaleToFill" id="eZm-RA-T90">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="dJu-nJ-mWb" kind="unwind" identifier="menu1" unwindAction="unwindToViewController:" id="hip-7K-xaR"/>
+                        <segue destination="WZ3-lP-yWR" kind="unwind" identifier="menu" unwindAction="unwindToViewController:" id="zuJ-3Y-rD2"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ig-wE-ul9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="dJu-nJ-mWb" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fui-Zj-rKU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="WZ3-lP-yWR" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="597" y="-378"/>
+            <point key="canvasLocation" x="537" y="168"/>
         </scene>
-        <!--Lose View-->
-        <scene sceneID="105-ud-78e">
+        <!--High Scores View-->
+        <scene sceneID="xgU-4v-jUV">
             <objects>
-                <viewController id="sGm-8m-dcv" customClass="LoseView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="iVa-bJ-gEY" customClass="HighScoresView" customModule="Whack" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cSK-lv-yak"/>
-                        <viewControllerLayoutGuide type="bottom" id="HKU-AG-Dct"/>
+                        <viewControllerLayoutGuide type="top" id="9gn-me-msD"/>
+                        <viewControllerLayoutGuide type="bottom" id="Cni-of-urM"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="mw5-LL-t9F">
+                    <view key="view" contentMode="scaleToFill" id="5eo-6o-qzo">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="view" destination="mw5-LL-t9F" id="hY7-9T-FC9"/>
-                        <segue destination="0SK-Mw-XT6" kind="unwind" identifier="menu" unwindAction="unwindToViewController:" id="Ufz-Yd-u4Q"/>
+                        <segue destination="nl7-qc-s5g" kind="unwind" identifier="menu2" unwindAction="unwindToViewController:" id="5ap-Yr-fgI"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UzN-RU-PTD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="0SK-Mw-XT6" userLabel="Exit" sceneMemberID="exit"/>
+                <exit id="nl7-qc-s5g" userLabel="Exit" sceneMemberID="exit"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ov2-xh-u6d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="835.5" y="268"/>
+            <point key="canvasLocation" x="-199.5" y="-335"/>
         </scene>
     </scenes>
 </document>
