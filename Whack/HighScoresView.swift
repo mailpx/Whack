@@ -19,41 +19,41 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         self.view.addSubview(tableView)
         
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
 
-        button.setTitle("return to menu", forState: .Normal)
-        button.addTarget(self, action: "returnToMenu:", forControlEvents: UIControlEvents.TouchUpInside)
-        button.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        button.backgroundColor = UIColor.lightGrayColor()
+        button.setTitle("return to menu", for: UIControlState())
+        button.addTarget(self, action: #selector(HighScoresView.returnToMenu(_:)), for: UIControlEvents.touchUpInside)
+        button.setTitleColor(UIColor.black, for: UIControlState())
+        button.backgroundColor = UIColor.lightGray
         view.addSubview(button);
         button.translatesAutoresizingMaskIntoConstraints = false
         
-        mapView.mapType = MKMapType.Standard
-        mapView.zoomEnabled = true
-        mapView.scrollEnabled = true
+        mapView.mapType = MKMapType.standard
+        mapView.isZoomEnabled = true
+        mapView.isScrollEnabled = true
         view.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
         constraintPortrait()
         constraintLandscape()
-        if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeLeft{
+        if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft{
             view.addConstraints(landscapeConstraint)
         }
-        else if UIDevice.currentDevice().orientation == UIDeviceOrientation.LandscapeRight{
+        else if UIDevice.current.orientation == UIDeviceOrientation.landscapeRight{
             view.addConstraints(landscapeConstraint)
         }
-        else if UIDevice.currentDevice().orientation == UIDeviceOrientation.Portrait{
+        else if UIDevice.current.orientation == UIDeviceOrientation.portrait{
             view.addConstraints(portraitConstraint)
         }
-        else if UIDevice.currentDevice().orientation == UIDeviceOrientation.PortraitUpsideDown{
+        else if UIDevice.current.orientation == UIDeviceOrientation.portraitUpsideDown{
             view.addConstraints(portraitConstraint)
         }
         
-        let preferences = NSUserDefaults.standardUserDefaults()
-        if let scoresdata = preferences.objectForKey("Scores") as? NSData {
-            if let scores =  NSKeyedUnarchiver.unarchiveObjectWithData(scoresdata) {
+        let preferences = UserDefaults.standard
+        if let scoresdata = preferences.object(forKey: "Scores") as? Data {
+            if let scores =  NSKeyedUnarchiver.unarchiveObject(with: scoresdata) {
                 if let temp = scores as?[Score] {
                     items = temp
                 }
@@ -66,96 +66,96 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
     func constraintPortrait() {
         //tableView
         //left
-        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0))
         //right
-        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0))
         //top
-        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .Top, relatedBy: .Equal,
-            toItem: topLayoutGuide, attribute:  .Bottom, multiplier: 1.0, constant: 10))
-        portraitConstraint.append(tableView.heightAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.height/3))
+        portraitConstraint.append(NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal,
+            toItem: topLayoutGuide, attribute:  .bottom, multiplier: 1.0, constant: 10))
+        portraitConstraint.append(tableView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/3))
         
         //mapView
         //left
-        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0))
         //right
-        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0))
         //top
-        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .TopMargin, relatedBy: .Equal,
-            toItem: tableView, attribute:  .BottomMargin, multiplier: 1.0, constant: 10))
+        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .topMargin, relatedBy: .equal,
+            toItem: tableView, attribute:  .bottomMargin, multiplier: 1.0, constant: 10))
         //bottom
-        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .BottomMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .BottomMargin, multiplier: 1.0, constant: -UIScreen.mainScreen().bounds.height/10))
+        portraitConstraint.append(NSLayoutConstraint(item: mapView, attribute: .bottomMargin, relatedBy: .equal,
+            toItem: view, attribute:  .bottomMargin, multiplier: 1.0, constant: -UIScreen.main.bounds.height/10))
         
         //botton
         //left
-        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0))
         //right
-        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0))
+        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0))
         //top
-        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .TopMargin, relatedBy: .Equal,
-            toItem: mapView, attribute:  .BottomMargin, multiplier: 1.0, constant: 10))
+        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .topMargin, relatedBy: .equal,
+            toItem: mapView, attribute:  .bottomMargin, multiplier: 1.0, constant: 10))
         //bottom
-        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal,
-            toItem: view, attribute:  .Bottom, multiplier: 1.0, constant: -10))
+        portraitConstraint.append(NSLayoutConstraint(item: button, attribute: .bottom, relatedBy: .equal,
+            toItem: view, attribute:  .bottom, multiplier: 1.0, constant: -10))
     }
     
     func constraintLandscape() {
         //tableView
         //left
-        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0))
         //right
-        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 0.5, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 0.5, constant: 0))
         //top
-        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .Top, relatedBy: .Equal,
-            toItem: topLayoutGuide, attribute:  .Bottom, multiplier: 1.0, constant: 10))
-    landscapeConstraint.append(tableView.heightAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width*0.9))
+        landscapeConstraint.append(NSLayoutConstraint(item: tableView, attribute: .top, relatedBy: .equal,
+            toItem: topLayoutGuide, attribute:  .bottom, multiplier: 1.0, constant: 10))
+    landscapeConstraint.append(tableView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width*0.9))
         
         //mapView
         //left
-        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .Left, relatedBy: .Equal,
-            toItem: tableView, attribute:  .Right, multiplier: 1.0, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .left, relatedBy: .equal,
+            toItem: tableView, attribute:  .right, multiplier: 1.0, constant: 0))
         //right
-        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0))
         //top
-        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .Top, relatedBy: .Equal,
-            toItem: topLayoutGuide, attribute:  .Bottom, multiplier: 1.0, constant: 10))
+        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .top, relatedBy: .equal,
+            toItem: topLayoutGuide, attribute:  .bottom, multiplier: 1.0, constant: 10))
         //bottom
-        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .BottomMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .BottomMargin, multiplier: 1.0, constant: -UIScreen.mainScreen().bounds.height/10))
+        landscapeConstraint.append(NSLayoutConstraint(item: mapView, attribute: .bottomMargin, relatedBy: .equal,
+            toItem: view, attribute:  .bottomMargin, multiplier: 1.0, constant: -UIScreen.main.bounds.height/10))
         
         //botton
         //left
-        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal,
-            toItem: tableView, attribute:  .Right, multiplier: 1.0, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .left, relatedBy: .equal,
+            toItem: tableView, attribute:  .right, multiplier: 1.0, constant: 0))
         //right
-        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0))
+        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0))
         //top
-        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .TopMargin, relatedBy: .Equal,
-            toItem: mapView, attribute:  .BottomMargin, multiplier: 1.0, constant: 10))
+        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .topMargin, relatedBy: .equal,
+            toItem: mapView, attribute:  .bottomMargin, multiplier: 1.0, constant: 10))
         //bottom
-        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal,
-            toItem: view, attribute:  .Bottom, multiplier: 1.0, constant: -10))
+        landscapeConstraint.append(NSLayoutConstraint(item: button, attribute: .bottom, relatedBy: .equal,
+            toItem: view, attribute:  .bottom, multiplier: 1.0, constant: -10))
     }
 
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator:    UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator:    UIViewControllerTransitionCoordinator) {
         
-        coordinator.animateAlongsideTransition({ (UIViewControllerTransitionCoordinatorContext) -> Void in
+        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
             
-            let orient = UIApplication.sharedApplication().statusBarOrientation
+            let orient = UIApplication.shared.statusBarOrientation
             
             switch orient {
-            case .Portrait:
+            case .portrait:
                 self.view.removeConstraints(self.landscapeConstraint)
                 self.view.addConstraints(self.portraitConstraint)
                 break
@@ -167,20 +167,20 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
             }, completion: { (UIViewControllerTransitionCoordinatorContext) -> Void in
                 
         })
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
-    func returnToMenu(Sender: UIButton!) {
-        self.performSegueWithIdentifier("menu2", sender: self)
+    func returnToMenu(_ Sender: UIButton!) {
+        self.performSegue(withIdentifier: "menu2", sender: self)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell")! as UITableViewCell
     
         if cell.contentView.subviews.count != 0 {
             for subview in cell.contentView.subviews {
@@ -197,9 +197,9 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         let stackScoreView = UIStackView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
-        stackScoreView.axis = .Horizontal
-        stackScoreView.distribution = .FillEqually
-        stackScoreView.alignment = .LastBaseline
+        stackScoreView.axis = .horizontal
+        stackScoreView.distribution = .fillEqually
+        stackScoreView.alignment = .lastBaseline
 
         let playerName = UILabel()
         playerName.text = items[indexPath.row].player
@@ -212,8 +212,8 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.contentView.addSubview(stackScoreView)
         
         let annotation = MKPointAnnotation()
-        annotation.coordinate.latitude = items[indexPath.row].latitude
-        annotation.coordinate.longitude = items[indexPath.row].longitude
+        annotation.coordinate.latitude = Double(items[indexPath.row].latitude)!
+        annotation.coordinate.longitude = Double(items[indexPath.row].longitude)!
         annotation.title = items[indexPath.row].player
         annotation.subtitle = "socre is " + String(items[indexPath.row].scoreNumber)
         mapView.showAnnotations([annotation], animated: true)
@@ -222,13 +222,13 @@ class HighScoresView: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row >= items.count {
             return
         }
         
         var region = MKCoordinateRegion()
-        let location = CLLocation(latitude: items[indexPath.row].latitude, longitude: items[indexPath.row].longitude)
+        let location = CLLocation(latitude: Double(items[indexPath.row].latitude)!, longitude: Double(items[indexPath.row].longitude)!)
         region.center = location.coordinate
         var span = MKCoordinateSpan()
         span.latitudeDelta = 1

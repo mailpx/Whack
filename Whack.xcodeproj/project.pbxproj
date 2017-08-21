@@ -76,8 +76,8 @@
 				841BAA6B1EB9AD4200F17914 /* ViewController.swift */,
 				841BAA7E1EB9C78B00F17914 /* GameView.swift */,
 				8415B48F1EDBF3E000B0C27C /* HighScoresView.swift */,
-				84C5C2E61EBEF65000B4F781 /* UIImageCell.swift */,
 				844AD6181EE407CB0000BF4C /* GameEndView.swift */,
+				84C5C2E61EBEF65000B4F781 /* UIImageCell.swift */,
 				844AD61A1EE4249E0000BF4C /* Score.swift */,
 				841BAA6D1EB9AD4200F17914 /* Main.storyboard */,
 				841BAA731EB9AD4200F17914 /* Assets.xcassets */,
@@ -138,6 +138,7 @@
 				TargetAttributes = {
 					841BAA651EB9AD4200F17914 = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -302,6 +303,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = afeka.Whack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -313,6 +315,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = afeka.Whack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

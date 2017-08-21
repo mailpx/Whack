@@ -12,11 +12,11 @@ class UIImageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let imageHeight = UIScreen.mainScreen().bounds.height / 6.5
-        let imageWidth = UIScreen.mainScreen().bounds.width / 4
+        let imageHeight = UIScreen.main.bounds.height / 6.5
+        let imageWidth = UIScreen.main.bounds.width / 4
         
-        imageFront.frame = CGRectMake(imageFront.frame.origin.x, imageFront.frame.origin.y, imageWidth, imageHeight)
-        imageBack.frame = CGRectMake(imageBack.frame.origin.x, imageBack.frame.origin.y, imageWidth, imageHeight)
+        imageFront.frame = CGRect(x: imageFront.frame.origin.x, y: imageFront.frame.origin.y, width: imageWidth, height: imageHeight)
+        imageBack.frame = CGRect(x: imageBack.frame.origin.x, y: imageBack.frame.origin.y, width: imageWidth, height: imageHeight)
         addSubview(imageFront)
         
         gameview = nil
@@ -27,9 +27,9 @@ class UIImageCell: UICollectionViewCell {
     }
     
     func flipImageFront() {
-        UIImageView.transitionFromView(self.imageFront, toView: self.imageBack, duration: 1.0, options: .TransitionFlipFromRight, completion: { finished in
+        UIImageView.transition(from: self.imageFront, to: self.imageBack, duration: 1.0, options: .transitionFlipFromRight, completion: { finished in
             
-            self.setPathAnimation(UIColor.redColor(), flipImage: self.flipImageBack)
+            self.setPathAnimation(UIColor.red, flipImage: self.flipImageBack)
             
         })
         self.isFliped = true
@@ -40,7 +40,7 @@ class UIImageCell: UICollectionViewCell {
             gameview?.missFlip()
         }
         self.isMiss = false
-        UIImageView.transitionFromView(self.imageBack, toView: self.imageFront, duration: 1.0, options: .TransitionFlipFromRight, completion: { finished in
+        UIImageView.transition(from: self.imageBack, to: self.imageFront, duration: 1.0, options: .transitionFlipFromRight, completion: { finished in
             self.imageBack.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         })
         self.isFliped = false
@@ -48,9 +48,9 @@ class UIImageCell: UICollectionViewCell {
     
     func flipImageFrontTimeOut() {
         imageBack.image = UIImage(named: "pineapples")
-        UIImageView.transitionFromView(self.imageFront, toView: self.imageBack, duration: 1.0, options: .TransitionFlipFromRight, completion: { finished in
+        UIImageView.transition(from: self.imageFront, to: self.imageBack, duration: 1.0, options: .transitionFlipFromRight, completion: { finished in
             
-            self.setPathAnimation(UIColor.greenColor(), flipImage: self.flipImageBackTimeOut)
+            self.setPathAnimation(UIColor.green, flipImage: self.flipImageBackTimeOut)
             
         })
         isFliped = true
@@ -58,7 +58,7 @@ class UIImageCell: UICollectionViewCell {
     }
     
     func flipImageBackTimeOut() {
-        UIImageView.transitionFromView(self.imageBack, toView: self.imageFront, duration: 1.0, options: .TransitionFlipFromRight, completion: { finished in
+        UIImageView.transition(from: self.imageBack, to: self.imageFront, duration: 1.0, options: .transitionFlipFromRight, completion: { finished in
             self.imageBack.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         })
         isFliped = false
@@ -66,7 +66,7 @@ class UIImageCell: UICollectionViewCell {
         imageBack.image = UIImage(named: "pineapple")
     }
     
-    func setPathAnimation(color : UIColor, flipImage:() -> Void) {
+    func setPathAnimation(_ color : UIColor, flipImage:@escaping () -> Void) {
         self.isMiss = true;
         
         let rect = UIBezierPath()
@@ -75,16 +75,16 @@ class UIImageCell: UICollectionViewCell {
         let y = self.imageBack.frame.origin.y
         let width = self.imageBack.frame.width
         let height = self.imageBack.frame.height
-        rect.moveToPoint(CGPoint(x: x, y: y))
-        rect.addLineToPoint(CGPoint(x: x + width, y: y))
-        rect.addLineToPoint(CGPoint(x: x + width, y: y + height))
-        rect.addLineToPoint(CGPoint(x: x, y: y + height))
-        rect.closePath()
+        rect.move(to: CGPoint(x: x, y: y))
+        rect.addLine(to: CGPoint(x: x + width, y: y))
+        rect.addLine(to: CGPoint(x: x + width, y: y + height))
+        rect.addLine(to: CGPoint(x: x, y: y + height))
+        rect.close()
         
         let progressLine = CAShapeLayer()
-        progressLine.path = rect.CGPath
-        progressLine.strokeColor = color.CGColor
-        progressLine.fillColor = UIColor.clearColor().CGColor
+        progressLine.path = rect.cgPath
+        progressLine.strokeColor = color.cgColor
+        progressLine.fillColor = UIColor.clear.cgColor
         progressLine.lineWidth = 5.0
         progressLine.lineCap = kCALineCapRound
         
@@ -102,13 +102,13 @@ class UIImageCell: UICollectionViewCell {
             flipImage();
         }
         // add the animation
-        progressLine.addAnimation(animateStrokeEnd, forKey: "animate stroke end animation")
+        progressLine.add(animateStrokeEnd, forKey: "animate stroke end animation")
         CATransaction.commit()
         
     }
     
     func pauseAnimation(){
-        let pausedTime = imageBack.layer.convertTime(CACurrentMediaTime(), fromLayer: nil)
+        let pausedTime = imageBack.layer.convertTime(CACurrentMediaTime(), from: nil)
         imageBack.layer.speed = 0.0
         imageBack.layer.timeOffset = pausedTime
     }
@@ -118,7 +118,7 @@ class UIImageCell: UICollectionViewCell {
         imageBack.layer.speed = 1.0
         imageBack.layer.timeOffset = 0.0
         imageBack.layer.beginTime = 0.0
-        let timeSincePause = imageBack.layer.convertTime(CACurrentMediaTime(), fromLayer: nil) - pausedTime
+        let timeSincePause = imageBack.layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         imageBack.layer.beginTime = timeSincePause
     }
 

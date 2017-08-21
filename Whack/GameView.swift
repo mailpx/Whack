@@ -30,7 +30,7 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     var shakeTimeOut = 0;
     var authorizedLocation = false
     
-    var timer = NSTimer()
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +48,8 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         //set sounds
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "background.png")!)
         do{
-            csound = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("c", ofType: "wav")!))
-            esound = try AVAudioPlayer(contentsOfURL: NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("e", ofType: "wav")!))
+            csound = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "c", ofType: "wav")!))
+            esound = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "e", ofType: "wav")!))
         }
         catch{
             
@@ -59,60 +59,60 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
 
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations[0]
     }
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.Denied) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if (status == CLAuthorizationStatus.denied) {
             
-        } else if (authorizedLocation && status == CLAuthorizationStatus.AuthorizedWhenInUse) {
+        } else if (authorizedLocation && status == CLAuthorizationStatus.authorizedWhenInUse) {
             flipTime = 0
-            timer = NSTimer.scheduledTimerWithTimeInterval(Double(1), target: self, selector: "flip:", userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: Double(1), target: self, selector: #selector(GameView.flip(_:)), userInfo: nil, repeats: true)
             authorizedLocation = false
         } 
     }
     
-    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         
-        if event?.subtype == UIEventSubtype.MotionShake && shake > 0 {
-            shake--
+        if event?.subtype == UIEventSubtype.motionShake && shake > 0 {
+            shake -= 1
             shakeLabel.text = String(shake)
             shakeTimeOut = 3
             pauseCellAnimations()
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if CLLocationManager.authorizationStatus() != .AuthorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
             authorizedLocation = true
         }
         else {
             flipTime = 0
-            timer = NSTimer.scheduledTimerWithTimeInterval(Double(1), target: self, selector: "flip:", userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: Double(1), target: self, selector: #selector(GameView.flip(_:)), userInfo: nil, repeats: true)
             manager.startUpdatingLocation()
         }
 
     }
     
-    func flip(timer: NSTimer) {
+    func flip(_ timer: Timer) {
         var timeString = String(time/60) + ":"
         let seconds = time%60
         if seconds < 10 {
-            timeString.appendContentsOf("0")
+            timeString.append("0")
         }
-        timeString.appendContentsOf(String(seconds))
+        timeString.append(String(seconds))
         timerLabel.text = timeString
-        time--;
+        time -= 1;
         if time < 0 {
             timer.invalidate()
             esound = nil
-            performSegueWithIdentifier("score", sender: self)
+            performSegue(withIdentifier: "score", sender: self)
         }
         if timeOut != 0 {
-            timeOut--;
+            timeOut -= 1;
             return;
         }
         if openedCell.count != 0 && flipTime <= 0{
@@ -120,7 +120,7 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
             let cellNumToFlip = openedCell[index]
             openedCell = openedCell.filter() { $0 != cellNumToFlip }
         
-            let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: cellNumToFlip, inSection: 0)) as! UIImageCell
+            let cell = collectionView.cellForItem(at: IndexPath(row: cellNumToFlip, section: 0)) as! UIImageCell
             
             let isCellTimeOut = Int(arc4random_uniform(4))
             if isCellTimeOut == 0 {
@@ -135,10 +135,10 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
             flipTime = 1
         }
         else {
-            flipTime--;
+            flipTime -= 1;
         }
         if shakeTimeOut != 0 {
-            shakeTimeOut--
+            shakeTimeOut -= 1
             if shakeTimeOut <= 0 {
                 resumeCellAnimations()
             }
@@ -150,32 +150,32 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func setUpReturnButton() {
-        returnButton.setTitle("return", forState: .Normal)
-        returnButton.setTitleColor(UIColor.yellowColor(), forState: .Normal)
-        returnButton.backgroundColor = UIColor.lightGrayColor()
+        returnButton.setTitle("return", for: UIControlState())
+        returnButton.setTitleColor(UIColor.yellow, for: UIControlState())
+        returnButton.backgroundColor = UIColor.lightGray
         returnButton.layer.cornerRadius = 10
         returnButton.layer.borderWidth = 2
-        returnButton.layer.borderColor = UIColor.blackColor().CGColor
-        returnButton.addTarget(self, action: "returnClick:", forControlEvents: UIControlEvents.TouchUpInside)
+        returnButton.layer.borderColor = UIColor.black.cgColor
+        returnButton.addTarget(self, action: #selector(GameView.returnClick(_:)), for: UIControlEvents.touchUpInside)
         
-        returnButton.titleLabel?.font = UIFont.init(name: "Helvetica", size:UIScreen.mainScreen().bounds.width/20)
+        returnButton.titleLabel?.font = UIFont.init(name: "Helvetica", size:UIScreen.main.bounds.width/20)
         view.addSubview(returnButton)
         
         returnButton.translatesAutoresizingMaskIntoConstraints = false
         //left
-        let leftConstraint = NSLayoutConstraint(item: returnButton, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: returnButton, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0)
         //right
-        let rightConstraint = NSLayoutConstraint(item: returnButton, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 0.2, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: returnButton, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 0.2, constant: 0)
         
         //top
-        let topConstraint = NSLayoutConstraint(item: returnButton, attribute: .Top, relatedBy: .Equal,
-            toItem: collectionView, attribute:  .Bottom, multiplier: 1.0, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: returnButton, attribute: .top, relatedBy: .equal,
+            toItem: collectionView, attribute:  .bottom, multiplier: 1.0, constant: 0)
         
         //bottom
-        let bottomConstraint = NSLayoutConstraint(item: returnButton, attribute: .Bottom, relatedBy: .Equal,
-            toItem: view, attribute:  .Bottom, multiplier: 1.0, constant: -10)
+        let bottomConstraint = NSLayoutConstraint(item: returnButton, attribute: .bottom, relatedBy: .equal,
+            toItem: view, attribute:  .bottom, multiplier: 1.0, constant: -10)
         
         
         //add constraints
@@ -184,17 +184,17 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     
     func setUpShakeLabel() {
         let shakeStackView = UIStackView()
-        shakeStackView.axis = .Horizontal
-        shakeStackView.distribution = .FillEqually
-        shakeStackView.alignment = .Fill
+        shakeStackView.axis = .horizontal
+        shakeStackView.distribution = .fillEqually
+        shakeStackView.alignment = .fill
         shakeStackView.spacing = 10
         
         let shakeTextLabel = UILabel()
         shakeTextLabel.text = "shake:"
-        shakeTextLabel.font = UIFont.systemFontOfSize(UIScreen.mainScreen().bounds.height/40)
+        shakeTextLabel.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.height/40)
         shakeStackView.addArrangedSubview(shakeTextLabel)
         
-        setUILael(shakeLabel, text: String(shake), size: UIScreen.mainScreen().bounds.height/40)
+        setUILael(shakeLabel, text: String(shake), size: UIScreen.main.bounds.height/40)
         shakeStackView.addArrangedSubview(shakeLabel)
         
         view.addSubview(shakeStackView)
@@ -202,50 +202,50 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         shakeStackView.translatesAutoresizingMaskIntoConstraints = false
         
         //left
-        let leftConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: UIScreen.mainScreen().bounds.width*0.6)
+        let leftConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: UIScreen.main.bounds.width*0.6)
         //right
-        let rightConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0)
         
         //top
-        let topConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .Top, relatedBy: .Equal,
-            toItem: collectionView, attribute:  .Bottom, multiplier: 1.0, constant: 0)
+        let topConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .top, relatedBy: .equal,
+            toItem: collectionView, attribute:  .bottom, multiplier: 1.0, constant: 0)
         
         //bottom
-        let bottomConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .Bottom, relatedBy: .Equal,
-            toItem: view, attribute:  .Bottom, multiplier: 1.0, constant: -10)
+        let bottomConstraint = NSLayoutConstraint(item: shakeStackView, attribute: .bottom, relatedBy: .equal,
+            toItem: view, attribute:  .bottom, multiplier: 1.0, constant: -10)
         
         
         //add constraints
         view.addConstraints([leftConstraint, rightConstraint, topConstraint, bottomConstraint])
     }
     
-    func setUILael(label: UILabel, text : String, size : CGFloat) {
+    func setUILael(_ label: UILabel, text : String, size : CGFloat) {
         label.text = text
-        label.backgroundColor = UIColor.blackColor()
-        label.textColor = UIColor.redColor()
+        label.backgroundColor = UIColor.black
+        label.textColor = UIColor.red
         label.layer.borderWidth = 2
-        label.layer.borderColor = UIColor.darkGrayColor().CGColor
-        label.textAlignment = NSTextAlignment.Center
+        label.layer.borderColor = UIColor.darkGray.cgColor
+        label.textAlignment = NSTextAlignment.center
         label.font = UIFont.init(name: "digital-7", size: size)
     }
     
     func setUpStackView() {
-        stackView.axis = .Horizontal
-        stackView.distribution = .FillEqually
-        stackView.alignment = .Fill
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
         stackView.spacing = 10
 
         let scoreTextLabel = UILabel()
         scoreTextLabel.text = "score:"
         stackView.addArrangedSubview(scoreTextLabel)
-        setUILael(scoreLabel, text: "0", size: UIScreen.mainScreen().bounds.height/20)
+        setUILael(scoreLabel, text: "0", size: UIScreen.main.bounds.height/20)
         stackView.addArrangedSubview(scoreLabel)
         let timeTextLabel = UILabel()
         timeTextLabel.text = "time:"
         stackView.addArrangedSubview(timeTextLabel)
-        setUILael(timerLabel, text: "0", size: UIScreen.mainScreen().bounds.height/20)
+        setUILael(timerLabel, text: "0", size: UIScreen.main.bounds.height/20)
         stackView.addArrangedSubview(timerLabel)
         
         view.addSubview(stackView)
@@ -253,17 +253,17 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         //left
-        let leftConstraint = NSLayoutConstraint(item: stackView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: stackView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0)
         //right
-        let rightConstraint = NSLayoutConstraint(item: stackView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: stackView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0)
         
         //top
-        let topConstraint = NSLayoutConstraint(item: stackView, attribute: .Top, relatedBy: .Equal,
-            toItem: topLayoutGuide, attribute:  .Bottom, multiplier: 1.0, constant: 10)
+        let topConstraint = NSLayoutConstraint(item: stackView, attribute: .top, relatedBy: .equal,
+            toItem: topLayoutGuide, attribute:  .bottom, multiplier: 1.0, constant: 10)
         
-        let stackViewHeight = stackView.heightAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.height/10)
+        let stackViewHeight = stackView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height/10)
         
         
         //add constraints
@@ -271,8 +271,8 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func setUpController() {
-        let height = UIScreen.mainScreen().bounds.height
-        let width = UIScreen.mainScreen().bounds.width
+        let height = UIScreen.main.bounds.height
+        let width = UIScreen.main.bounds.width
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: height/50, left: width/50, bottom: height/50, right: width/50)
@@ -281,46 +281,46 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.registerClass(UIImageCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(UIImageCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.backgroundView = nil;
-        collectionView.backgroundColor = UIColor.clearColor();
+        collectionView.backgroundColor = UIColor.clear;
         
         view.addSubview(collectionView)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         //left
-        let leftConstraint = NSLayoutConstraint(item: collectionView, attribute: .LeftMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .LeftMargin, multiplier: 1.0, constant: 0)
+        let leftConstraint = NSLayoutConstraint(item: collectionView, attribute: .leftMargin, relatedBy: .equal,
+            toItem: view, attribute:  .leftMargin, multiplier: 1.0, constant: 0)
         //right
-        let rightConstraint = NSLayoutConstraint(item: collectionView, attribute: .RightMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .RightMargin, multiplier: 1.0, constant: 0)
+        let rightConstraint = NSLayoutConstraint(item: collectionView, attribute: .rightMargin, relatedBy: .equal,
+            toItem: view, attribute:  .rightMargin, multiplier: 1.0, constant: 0)
         
         //top
-        let topConstraint = NSLayoutConstraint(item: collectionView, attribute: .TopMargin, relatedBy: .Equal,
-            toItem: stackView, attribute:  .BottomMargin, multiplier: 1.0, constant: 10)
+        let topConstraint = NSLayoutConstraint(item: collectionView, attribute: .topMargin, relatedBy: .equal,
+            toItem: stackView, attribute:  .bottomMargin, multiplier: 1.0, constant: 10)
         
         //bottom
-        let bottomConstraint = NSLayoutConstraint(item: collectionView, attribute: .BottomMargin, relatedBy: .Equal,
-            toItem: view, attribute:  .BottomMargin, multiplier: 1.0, constant: -height/15)
+        let bottomConstraint = NSLayoutConstraint(item: collectionView, attribute: .bottomMargin, relatedBy: .equal,
+            toItem: view, attribute:  .bottomMargin, multiplier: 1.0, constant: -height/15)
         
         //add constraints
         view.addConstraints([leftConstraint, rightConstraint, topConstraint, bottomConstraint])
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 12
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! UIImageCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! UIImageCell
         cell.gameview = self
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItemAtIndexPath(indexPath) as! UIImageCell
+        let cell = collectionView.cellForItem(at: indexPath) as! UIImageCell
 
         if cell.isFliped {
             if cell.isTimeOut{
@@ -340,8 +340,8 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func pauseCellAnimations() {
-        for(var i = 0; i < 12; i++) {
-            let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! UIImageCell
+        for i in 0 ..< 12 {
+            let cell = collectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! UIImageCell
             if cell.isFliped {
                 cell.pauseAnimation()
             }
@@ -349,41 +349,45 @@ class GameView: UIViewController, UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func resumeCellAnimations() {
-        for(var i = 0; i < 12; i++) {
-            let cell = collectionView.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! UIImageCell
+        for i in 0 ..< 12 {
+            let cell = collectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! UIImageCell
             if cell.isFliped {
                 cell.resumeAnimation()
             }
         }
     }
     
-    func returnClick(Sender: UIButton!) {
+    func returnClick(_ Sender: UIButton!) {
         timer.invalidate()
         pauseCellAnimations()
-        let alert = UIAlertController(title: "Alert", message: "are you sure you want to return", preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.Default, handler: { action in
-            self.performSegueWithIdentifier("return", sender: self)
+        let alert = UIAlertController(title: "Alert", message: "are you sure you want to return", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "yes", style: UIAlertActionStyle.default, handler: { action in
+            self.performSegue(withIdentifier: "return", sender: self)
         }))
-        alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.Cancel, handler: { action in
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(1), target: self, selector: "flip:", userInfo: nil, repeats: true)
+        alert.addAction(UIAlertAction(title: "no", style: UIAlertActionStyle.cancel, handler: { action in
+            self.timer = Timer.scheduledTimer(timeInterval: Double(1), target: self, selector: #selector(GameView.flip(_:)), userInfo: nil, repeats: true)
             self.resumeCellAnimations()
         }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
-    override func shouldAutorotate() -> Bool {
-        return false
+    override var shouldAutorotate: Bool {
+        get {
+            return false
+        }
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get {
+            return .portrait
+        }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender:    AnyObject?)   {
+    override func prepare(for segue: UIStoryboardSegue, sender:    Any?)   {
         
         if (segue.identifier == "score") {
             
-            let vc = segue.destinationViewController as!  GameEndView
+            let vc = segue.destination as!  GameEndView
             vc.score = score
             vc.location = location
             
